@@ -14,6 +14,7 @@ const Looks = () => {
     const [previousPage, setPreviousPage] = useState(false)
     const [filter, setFilter] = useState({
         name: "",
+        country: "",
         hashtag: "",
         hype_count: ""
     });
@@ -83,6 +84,8 @@ const Looks = () => {
             myUrl += "hype_count=" + filter.hype_count + "&"
         if(filter.name)
             myUrl += "name=" + filter.name + "&"
+        if(filter.country)
+            myUrl += "country=" + filter.country + "&"
         const resp = await fetch(`${myUrl}`)
         const data = await resp.json()
         setLooks(data.results)
