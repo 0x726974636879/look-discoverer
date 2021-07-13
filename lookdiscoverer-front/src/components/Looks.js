@@ -51,7 +51,7 @@ const Looks = () => {
     }
 
     const editLook = async (data) => {
-        const response = await fetch(`${url}${selectedLook.look_id}/`, {
+        const response = await fetch(`${baseUrl}${selectedLook.look_id}/`, {
             method: "PUT",
             headers: {
                 'Accept': 'application/json',
