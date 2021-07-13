@@ -6,21 +6,21 @@ import Filter from './Filter'
 import Paginate from './Paginate'
 
 const Looks = () => {
+    const baseUrl = "http://localhost:8000/api/looks/"
     const [looks, setLooks] = useState([])
     const [openModal, setOpenModal] = useState(false)
     const [selectedLook, setSelectedLook] = useState()
-    const [currentPage, setCurrentPage] = useState(1)
+    const [hasFilters, setHasFilters] = useState(false)
     const [nextPage, setNextPage] = useState(false)
     const [previousPage, setPreviousPage] = useState(false)
     const [filter, setFilter] = useState({
         name: "",
         country: "",
         hashtag: "",
-        hype_count: ""
+        hype_count: "",
+        currentPage: 1
     });
-
-
-    const url = "http://localhost:8000/api/looks/"
+    const [url, setUrl] = useState(baseUrl)
 
     useEffect(() => {
         const getLooks = async () => {
@@ -34,22 +34,20 @@ const Looks = () => {
     }, [])
 
     const onChangePage = async (nextprev) => {
-        let page = currentPage
-        if (nextPage && nextprev === "next"){
+        console.log("currentPage", filter.currentPage)
+        let page = filter.currentPage
+        let myFilter = filter
+        if(!myFilter.country && !myFilter.currentPage && !myFilter.hashtag && !myFilter.hype_count && !myFilter.name)
+            page = 1
+        if (nextPage && nextprev === "next")
             page++
-            setCurrentPage(page)
-        } else if (previousPage && nextprev === "prev"){
+        else if (previousPage && nextprev === "prev")
             page--
-            setCurrentPage(page)
-        }
-        console.log("currentPage", page)
-        const resp = await fetch(`${url}?page=${page}`)
-        const data = await resp.json()
-        if (data.previous != null)
-            setPreviousPage(true)
-        else
-            setPreviousPage(false)
-        setLooks(data.results)
+        if((nextPage || previousPage) && (nextPage || previousPage))
+            myFilter.currentPage = page
+            setFilter(myFilter)
+            console.log(filter)
+            filterLook(false)
     }
 
     const editLook = async (data) => {
@@ -75,26 +73,38 @@ const Looks = () => {
     }
     const handleCloseModal = () => setOpenModal(false)
 
-    const filterLook = async () => {
-        let myUrl = url
-        myUrl += "?"
+    const filterLook = async (firstTimeFiltre) => {
+        let myPage = 1
+        if(!firstTimeFiltre)
+            myPage = filter.currentPage
+            setFilter({...filter, currentPage: myPage})
+        let myFilter = `?page=${myPage}&`
         if(filter.hashtag)
-            myUrl += "hashtags=" + filter.hashtag + "&"
+            myFilter += "hashtags=" + filter.hashtag + "&"
         if(filter.hype_count)
-            myUrl += "hype_count=" + filter.hype_count + "&"
+            myFilter += "hype_count=" + filter.hype_count + "&"
         if(filter.name)
-            myUrl += "name=" + filter.name + "&"
+            myFilter += "name=" + filter.name + "&"
         if(filter.country)
-            myUrl += "country=" + filter.country + "&"
-        const resp = await fetch(`${myUrl}`)
+            myFilter += "country=" + filter.country
+        setUrl(baseUrl + myFilter)
+        const resp = await fetch(`${baseUrl}${myFilter}`)
         const data = await resp.json()
+        if (data.previous != null)
+            setPreviousPage(true)
+        else
+            setPreviousPage(false)
+        if(data.next != null)
+            setNextPage(true)
+        else
+            setNextPage(false)
         setLooks(data.results)
     }
 
     return (
         <>
         <Filter setFilter={setFilter} filter={filter} filterLook={filterLook} />
-        <Paginate onChangePage={onChangePage} currentPage={currentPage} />
+        <Paginate onChangePage={onChangePage} currentPage={filter.currentPage} />
         <table className="table">
             <thead>
                 <tr>
@@ -114,7 +124,7 @@ const Looks = () => {
             </tbody>
             <Modal openModal={openModal} handleOpenModal={handleOpenModal} handleCloseModal={handleCloseModal} selectedLook={selectedLook} editLook={editLook} />
         </table>
-        <Paginate onChangePage={onChangePage} currentPage={currentPage} />
+        <Paginate onChangePage={onChangePage} currentPage={filter.currentPage} />
         </>
     )
 }
