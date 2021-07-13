@@ -17,6 +17,7 @@ class ListLooksView(ListAPIView):
         name = self.request.GET.get("name")
         hashtags = self.request.GET.get("hashtags")
         hype_count = self.request.GET.get("hype_count")
+        country = self.request.GET.get("country")
         if name:
             looks = looks.filter(look_name__icontains=name)
         if hashtags:
@@ -27,6 +28,8 @@ class ListLooksView(ListAPIView):
             looks = looks.filter(query)
         if hype_count:
             looks = looks.filter(hype_count=hype_count)
+        if country:
+            looks = looks.filter(country=country)
         return looks
 
 
