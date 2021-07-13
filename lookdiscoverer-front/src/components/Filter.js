@@ -4,12 +4,14 @@ import Container from '@material-ui/core/Container';
 
 const Filter = ({ filterLook, filter, setFilter }) => {
     const handleChangeHashtag = (e) => setFilter({...filter, hashtag:e.target.value});
+    const handleChangeCountry = (e) => setFilter({...filter, country:e.target.value});
     const handleChangeHypeCount = (e) => setFilter({...filter, hype_count:e.target.value});
     const handleChangeName = (e) => setFilter({...filter, name:e.target.value});
 
     return (
         <Container maxWidth="lg">
             <TextField value={filter.name} onChange={handleChangeName} label="Name" />
+            <TextField value={filter.country} onChange={handleChangeCountry} label="Country" />
             <TextField type="number" value={filter.hype_count} onChange={handleChangeHypeCount} label="Hype Count" />
             <TextField value={filter.hashtag} onChange={handleChangeHashtag} label="Hashtag" />
             <Button onClick={filterLook} variant="contained" size="large" color="primary">Filter</Button>
