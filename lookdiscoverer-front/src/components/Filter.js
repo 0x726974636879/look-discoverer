@@ -14,7 +14,7 @@ const Filter = ({ filterLook, filter, setFilter }) => {
             <TextField value={filter.country} onChange={handleChangeCountry} label="Country" />
             <TextField type="number" value={filter.hype_count} onChange={handleChangeHypeCount} label="Hype Count" />
             <TextField value={filter.hashtag} onChange={handleChangeHashtag} label="Hashtag" />
-            <Button onClick={filterLook} variant="contained" size="large" color="primary">Filter</Button>
+            <Button onClick={() => filterLook(true)} variant="contained" size="large" color="primary">Filter</Button>
         </Container>
     )
 }
