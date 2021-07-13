@@ -13,9 +13,9 @@ services:
         working_dir: /usr/src/app/lookdiscoverer
         environment:
             - PYTHONBUFFERED=1
-            - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-            - DB_NAME=${DB_NAME}
-            - DB_HOST=${DB_HOST}
+            - DJANGO_SECRET_KEY=django
+            - DB_NAME=locald
+            - DB_HOST=mongodb://localhost:27017/
             - DJANGO_SUPERUSER_USERNAME=locald
             - DJANGO_SUPERUSER_PASSWORD=locald
             - DJANGO_SUPERUSER_EMAIL=locald@locald.fr
