@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+    # lookdiscoverer
+    lookdiscoverer:
+        build:
+            context: ./
+            dockerfile: django.Dockerfile
+        restart: unless-stopped
+        volumes:
+            - .:/usr/src/app:delegated
+        ports:
+            - "8000:8000"
+        working_dir: /usr/src/app/lookdiscoverer
+        environment:
+            - PYTHONBUFFERED=1
+            - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+            - DB_NAME=${DB_NAME}
+            - DB_HOST=${DB_HOST}
+            - DJANGO_SUPERUSER_USERNAME=locald
+            - DJANGO_SUPERUSER_PASSWORD=locald
+            - DJANGO_SUPERUSER_EMAIL=locald@locald.fr
