@@ -99,6 +99,7 @@ const Looks = () => {
             <thead>
                 <tr>
                     <th><abbr title="Identifier">ID</abbr></th>
+                    <th>Icon</th>
                     <th>Name</th>
                     <th>Country</th>
                     <th>Hype count</th>
