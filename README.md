@@ -14,6 +14,9 @@ For each look, we have the following data:
 - Image md5
 - “Hype” count
 
+## Requirements
+Docker v20.x
+
 ## API
 ### Develop an API to interact with the looks by implementing the two following routes. You must use Python for this.
 
